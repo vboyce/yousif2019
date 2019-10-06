@@ -1,0 +1,74 @@
+---
+title: "Replication of The Illusion of Consensus study (Experiment 5) by Yousif, Aboody & Keil (2019, Psychological Science)"
+author: "Ayodele Dada (ayo.dada@stanford.edu)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+---
+
+<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+[Link to the repository in psych251](https://github.com/psych251/yousif2019.git)
+
+## Introduction
+
+As we navigate a world with a surfeit of information on almost anything, we are sometimes interested in the trustworthiness of some claims and reports. This matters to me both as a PhD student in the social area of psychology and because not all our knowledge of the world will come from personal experience. We depend to some extent on the information we get from primary and secondary sources. A respectable body of classic literature in social psychology has underlined the role of consensus in informing how confident we feel about a claim. From conformity studies to studies of social influence, consensus assists us in deciding what to believe or how to behave in several social situations. There is however a potential flaw to this broad use of consensus.
+What if everyone we ask about a claim all seem to find it trustworthy despite all getting their information from a single primary source? If we perceived consensus on an issue simply because many secondary sources said the same thing, would our perception of consensus change if we were informed that there was only one primary source? This has real world implications today given recent events which have made their way into public discourse. For example, what exactly qualifies as "fake news" in these fraught political times? If many people repeat the same thing as told to all of them by one person, how confident would we be that we could trust such information? Are the scientists who make almost apocalyptic predictions about climate change simply alarmists? Did they reach their conclusions independently or are they victims of the cumulative nature of science to perpetuate erroneous conclusions from a single study? Conversely, are the naysayers of climate change who depend on the assertions of a single source worth taking seriously?
+To propose some answers to these questions, this study replicated original work by Yousif, Aboody and Keil (2019) who suggested that the illusion of consensus was significant enough to influence people's confidence in a claim or story. The illusion of consensus refers to a subject's tendency to be overconfident in a claim from several secondary sources based on a single primary source (false consensus). This leads them to underestimate the difference between such claims and one from several primary sources (true consensus). A primary source is the witness of the event which is the basis of their claim while a secondary source simply reports the claims of the primary source. 
+Based on the foregoing, the current study will focus on two hypotheses:
+
+*H1: Participants will be more confident of the news reports in the true consensus condition than in the false consensus condition*
+
+*H2: Participants' confidence in the news reports will be greater in the false consensus condition than in the no consensus condition*
+
+## Methods
+The research adopted a 3-group between subjects design. It was an experiment with three conditions namely: 
+True consensus (Experimental group)
+
+False consensus (Experimental group)
+
+No consensus (Control group)
+
+The variables of interest were number of primary sources making the same claim (independent variable) and the confidence of the participant in the claim (dependent variable). There were 3 levels of the independent variable corresponding to the three experimental conditions: four primary sources with the same claim and one opposing claim, four secondary sources with the same claim based on a single primary source with one opposing claim, and one primary source with a claim alongside one opposing claim. The dependent variable was reported by participants on a scale of 0 to 100.
+
+### Power Analysis
+The following power analysis was computed using the pwr.t.test function in the 'pwr' package in R. Arguments in the function were informed by medium estimates of effect size (d = 0.5) due to the experimental nature of the study, recommended minimum power (power = 0.85), significance level of 0.05, independent samples t-tests and directional hypotheses.
+```{r Power analysis}
+library(pwr)
+pwr.t.test(d = 0.5,n = NULL,power = 0.85, sig.level = 0.05, type = "two.sample",alternative = "greater")
+
+```
+
+
+### Planned Sample
+
+Based on the power analysis in the previous section, at least 60 participants will be randomly assigned to each group or experimental condition. This translates to N >= 180 for the current study. All participants would be recruited from Amazon's Mechanical Turk after completing an online survey and were all resident in the United States. As was the case in the original study, any participant who failed the attention checks at the end of the experiment would be excluded from the study. In the event that any participants fail these attention checks, other participants will be recruited untill the desired sample size is met.
+In the original study, 80 participants were randomly assigned to each condition for this experiment making a total of N = 240. 
+
+### Materials
+
+"Materials consisted of fake news articles about a bear sighting on a local high school campus. Four of the news articles claimed to have witnessed the bear, and one took a negative stance (the bear sightings were false). All report cited a single primary source (the name of a witness). Each news article was from a different news outlet from the others" (Yousif, Aboody & Keil, 2019).
+
+
+### Procedure	
+(The procedure is identical to the original study except for some minor changes as indicated by the italicized words.)
+
+"*Sixty* participants were randomly assigned to three conditions: a true-consensus condition, a no-consensus condition, and a false-consensus condition. In the true-consensus condition, participants read all five news reports (four positive, one negative). Because each news report cited a unique primary source, participants heard from five primary sources.
+Participants in the false-consensus condition also read all five news reports, except that the four news reports claiming to have seen a bear all cited the same primary source. Thus, participants heard from only two primary sources overall (one affirming the sighting and one taking an opposing view). In the baseline no consensus condition, participants read only two news articles: the one no-sighting report and one positive sighting report randomly drawn from the four available positive sightings. In this condition, then, participants heard from two primary sources (as in the false-consensus condition, one took a positive stance and one took a negative stance)" (Yousif, Aboody & Keil, 2019).
+"We expected that participants’ confidence ratings would be significantly higher in the true-consensus condition than in the no-consensus condition. Therefore, the critical question was where confidence ratings in the false-consensus condition would fall. If people tracked only the number of primary sources, then confidence ratings in the false-consensus condition should be identical to those in the no-consensus condition, because in both, only a single primary source was cited on each side of the argument. On the other hand, if people’s estimations of consensus relied only on the number of secondary sources, then confidence ratings in the false-consensus condition should be identical to those in the true-consensus condition, because both included four positive report and one negative report" (Yousif, Aboody & Keil, 2019).
+"Across all conditions, the exact same information was presented in each report; all that varied (other than superficial changes in the language) was the number of unique primary sources cited across the articles. The news reports were presented in a randomized order, one at a time, to each participant " (Yousif, Aboody & Keil, 2019). 
+"After reading the articles, participants read the following prompt, presented in plain text at the top of the screen: “Based on the news reports you saw, to what extent do you agree that *a bear was seen close to the school*? Please rate your agreement on the scale below from 0 (strongly disagree) to 100 (strongly agree).” Participants responded by clicking on a number line to indicate their confidence that the bear sighting was true and were prompted to confirm their answer before submitting it. On a separate screen, participants were then asked two questions" (Yousif, Aboody & Keil, 2019).
+"First, they saw a list of 10 sources and were asked to indicate which had been cited in the news reports they read (there were no limits on the number of sources participants could select). Next, they saw a *list of five schools* and were asked to identify which one the news reports had been about. Participants who answered incorrectly were excluded and replaced. No other information was collected." (Yousif, Aboody & Keil, 2019)
+
+
+### Analysis Plan
+From the hypotheses, the analyses in this study will be identical to the original study in which straightforward independent t-tests were used to test both hypotheses. Just as was done in the original study, one sample t-tests may also be conducted to confirm that participants were able to identify the sources at above chance levels.
+
+
+### Differences from Original Study
+One obvious difference between the current study and the original one will be the sample size. This should not result in any significant differences in outcome since the minimum power criterion for the study should be satisfied.
+
