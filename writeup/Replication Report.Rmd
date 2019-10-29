@@ -97,7 +97,7 @@ library(shiny)
 #### Import data#### Prepare data for analysis - create columns etc.
 "Data from Qualtrics was imported in CSV numeric format. The survey was modified in real time as responses were coming in from the non-naive participants. Out of almost 80 respondents, only 29 were useful for the pilot at the time of analysis."
 
-IlluCon <- read_csv("C:/Users/16502/Desktop/yousif2019/Replication project_ Illusion of consensus_October 27, 2019_15.54.csv")
+IlluCon <- read_csv("C:/Users/16502/Desktop/yousif2019/Replication project_ Illusion of consensus_October 28, 2019_15.44.csv")
 
 IlluCon_light <- IlluCon %>%
   filter(AttCheck2 == 4) %>%
@@ -151,7 +151,12 @@ IlluCon_light_summary <- IlluCon_light %>%
   summarise
 
 
+#t test comparisons for all the variables in the experimental conditions
+t.test(IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == "TrueConsensus"], IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == "FalseConsensus"])
 
+t.test(IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == "FalseConsensus"], IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == "NoConsensus"])
+
+t.test(IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == "TrueConsensus"], IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == "NoConsensus"])
 
 ```
 
