@@ -12,7 +12,7 @@
 
 <meta name="author" content="Ayodele Dada (ayo.dada@stanford.edu)" />
 
-<meta name="date" content="2019-10-27" />
+<meta name="date" content="2019-12-04" />
 
 <title>Replication of The Illusion of Consensus study (Experiment 5) by Yousif, Aboody &amp; Keil (2019, Psychological Science)</title>
 
@@ -1434,6 +1434,12 @@ summary {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -1512,7 +1518,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Replication of The Illusion of Consensus study (Experiment 5) by Yousif, Aboody &amp; Keil (2019, Psychological Science)</h1>
 <h4 class="author">Ayodele Dada (<a href="mailto:ayo.dada@stanford.edu" class="email">ayo.dada@stanford.edu</a>)</h4>
-<h4 class="date">October 27, 2019</h4>
+<h4 class="date">December 04, 2019</h4>
 
 </div>
 
@@ -1579,12 +1585,12 @@ pwr.t.test(d = 0.5,n = NULL,power = 0.85, sig.level = 0.05, type = &quot;two.sam
 
 ### Load Relevant Libraries and Functions
 library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages --------------------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v ggplot2 3.2.1     v purrr   0.3.2
+<pre><code>## -- Attaching packages --------------------------- tidyverse 1.2.1 --</code></pre>
+<pre><code>## v ggplot2 3.2.1     v purrr   0.3.3
 ## v tibble  2.1.3     v dplyr   0.8.3
 ## v tidyr   1.0.0     v stringr 1.4.0
 ## v readr   1.3.1     v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts ------------------------ tidyverse_conflicts() --
+<pre><code>## -- Conflicts ------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>library(DT) 
@@ -1600,7 +1606,7 @@ library(shiny)</code></pre>
 <pre class="r"><code>#### Import data#### Prepare data for analysis - create columns etc.
 &quot;Data from Qualtrics was imported in CSV numeric format. The survey was modified in real time as responses were coming in from the non-naive participants. Out of almost 80 respondents, only 29 were useful for the pilot at the time of analysis.&quot;</code></pre>
 <pre><code>## [1] &quot;Data from Qualtrics was imported in CSV numeric format. The survey was modified in real time as responses were coming in from the non-naive participants. Out of almost 80 respondents, only 29 were useful for the pilot at the time of analysis.&quot;</code></pre>
-<pre class="r"><code>IlluCon &lt;- read_csv(&quot;C:/Users/16502/Desktop/yousif2019/Replication project_ Illusion of consensus_October 27, 2019_15.54.csv&quot;)</code></pre>
+<pre class="r"><code>IlluCon &lt;- read_csv(&quot;C:/Users/16502/OneDrive/Desktop/yousif2019/Replication project_ Illusion of consensus_December 4, 2019_17.16.csv&quot;)</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   .default = col_character()
@@ -1608,13 +1614,13 @@ library(shiny)</code></pre>
 <pre><code>## See spec(...) for full column specifications.</code></pre>
 <pre class="r"><code>IlluCon_light &lt;- IlluCon %&gt;%
   filter(AttCheck2 == 4) %&gt;%
-  select(c(&quot;ConfirmP1&quot;, &quot;ConfirmP2&quot;, &quot;ConfirmP3&quot;, &quot;ConfirmP4&quot;, &quot;ConfirmN1&quot;, &quot;ConfirmFC2&quot;, &quot;ConfirmFC3&quot;, &quot;ConfirmFC4&quot;, &quot;Rating_1&quot;))
+  select(c(&quot;Positive_1&quot;, &quot;Positive_2&quot;, &quot;Positive_3&quot;, &quot;Positive_4&quot;, &quot;Negative_1&quot;, &quot;False_Consensus_1&quot;, &quot;False_Consensus_2&quot;, &quot;False_Consensus_3&quot;, &quot;Rating_1&quot;))
 
 #### Data exclusion / filtering
 &quot;As specified in the procedure, participants who fail the attention check will be excluded. As in the original study, results from approximately 10% of the participants will be excluded&quot;</code></pre>
 <pre><code>## [1] &quot;As specified in the procedure, participants who fail the attention check will be excluded. As in the original study, results from approximately 10% of the participants will be excluded&quot;</code></pre>
 <pre class="r"><code>IlluCon_light &lt;- IlluCon_light %&gt;%
-  filter(ConfirmN1 == 4)
+  filter(Negative_1 == 4)
 
 
 IlluCon_light[is.na(IlluCon_light)] &lt;- 0  #Change all NA to 0 so that numeric operations can be carried out on values
@@ -1622,41 +1628,43 @@ IlluCon_light[is.na(IlluCon_light)] &lt;- 0  #Change all NA to 0 so that numeric
 
 which(!is.numeric(IlluCon_light))     #Change every other column entry to numeric values</code></pre>
 <pre><code>## [1] 1</code></pre>
-<pre class="r"><code>IlluCon_light$ConfirmP1 &lt;- as.numeric(IlluCon_light$ConfirmP1)
-IlluCon_light$ConfirmP2 &lt;- as.numeric(IlluCon_light$ConfirmP2)
-IlluCon_light$ConfirmP3 &lt;- as.numeric(IlluCon_light$ConfirmP3)
-IlluCon_light$ConfirmP4 &lt;- as.numeric(IlluCon_light$ConfirmP4)
-IlluCon_light$ConfirmN1 &lt;- as.numeric(IlluCon_light$ConfirmN1)
-IlluCon_light$ConfirmFC2 &lt;- as.numeric(IlluCon_light$ConfirmFC2)
-IlluCon_light$ConfirmFC3 &lt;- as.numeric(IlluCon_light$ConfirmFC3)
-IlluCon_light$ConfirmFC4 &lt;- as.numeric(IlluCon_light$ConfirmFC4)
+<pre class="r"><code>IlluCon_light$Positive_1 &lt;- as.numeric(IlluCon_light$Positive_1)
+IlluCon_light$Positive_2 &lt;- as.numeric(IlluCon_light$Positive_2)
+IlluCon_light$Positive_3 &lt;- as.numeric(IlluCon_light$Positive_3)
+IlluCon_light$Positive_4 &lt;- as.numeric(IlluCon_light$Positive_4)
+IlluCon_light$Negative_1 &lt;- as.numeric(IlluCon_light$Negative_1)
+IlluCon_light$False_Consensus_1 &lt;- as.numeric(IlluCon_light$False_Consensus_1)
+IlluCon_light$False_Consensus_2 &lt;- as.numeric(IlluCon_light$False_Consensus_2)
+IlluCon_light$False_Consensus_3 &lt;- as.numeric(IlluCon_light$False_Consensus_3)
 IlluCon_light$Rating_1 &lt;- as.numeric(IlluCon_light$Rating_1)
 
 f &lt;- sapply(IlluCon_light, is.numeric)
 
 which(f)</code></pre>
-<pre><code>##  ConfirmP1  ConfirmP2  ConfirmP3  ConfirmP4  ConfirmN1 ConfirmFC2 
-##          1          2          3          4          5          6 
-## ConfirmFC3 ConfirmFC4   Rating_1 
-##          7          8          9</code></pre>
+<pre><code>##        Positive_1        Positive_2        Positive_3        Positive_4 
+##                 1                 2                 3                 4 
+##        Negative_1 False_Consensus_1 False_Consensus_2 False_Consensus_3 
+##                 5                 6                 7                 8 
+##          Rating_1 
+##                 9</code></pre>
 <pre class="r"><code>IlluCon_light[, f]</code></pre>
-<pre><code>## # A tibble: 35 x 9
-##    ConfirmP1 ConfirmP2 ConfirmP3 ConfirmP4 ConfirmN1 ConfirmFC2 ConfirmFC3
-##        &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-##  1         0         1         0         0         4          0          0
-##  2         1         1         1         1         4          0          0
-##  3         0         0         0         1         4          0          0
-##  4         1         1         1         1         4          0          0
-##  5         0         0         1         0         4          0          0
-##  6         1         0         0         0         4          4         23
-##  7         0         2         0         0         4          0          0
-##  8         0         0         2         0         4          0          0
-##  9         1         0         0         0         4          4         23
-## 10         1         0         0         0         4          0          0
-## # ... with 25 more rows, and 2 more variables: ConfirmFC4 &lt;dbl&gt;,
-## #   Rating_1 &lt;dbl&gt;</code></pre>
+<pre><code>## # A tibble: 39 x 9
+##    Positive_1 Positive_2 Positive_3 Positive_4 Negative_1 False_Consensus~
+##         &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;            &lt;dbl&gt;
+##  1          0          1          0          0          4                0
+##  2          1          1          1          1          4                0
+##  3          0          0          0          1          4                0
+##  4          1          1          1          1          4                0
+##  5          0          0          1          0          4                0
+##  6          1          0          0          0          4                4
+##  7          0          2          0          0          4                0
+##  8          0          0          2          0          4                0
+##  9          1          0          0          0          4                4
+## 10          1          0          0          0          4                0
+## # ... with 29 more rows, and 3 more variables: False_Consensus_2 &lt;dbl&gt;,
+## #   False_Consensus_3 &lt;dbl&gt;, Rating_1 &lt;dbl&gt;</code></pre>
 <pre class="r"><code>IlluCon_light &lt;- IlluCon_light %&gt;%       #Indicate the conditions in the experiment
-  mutate(ExpCondition1 = ifelse((ConfirmP1 + ConfirmP2 + ConfirmP3 + ConfirmP4) == 4,&quot;TrueConsensus&quot;,ifelse(ConfirmFC2 == 4, &quot;FalseConsensus&quot;, &quot;NoConsensus&quot;)))</code></pre>
+  mutate(ExpCondition1 = ifelse((Positive_1 + Positive_2 + Positive_3 + Positive_4) == 4,&quot;TrueConsensus&quot;,ifelse(False_Consensus_1 == 4, &quot;FalseConsensus&quot;, &quot;NoConsensus&quot;)))</code></pre>
 </div>
 <div id="confirmatory-analysis" class="section level3">
 <h3>Confirmatory analysis</h3>
@@ -1665,7 +1673,46 @@ which(f)</code></pre>
 <pre><code>## [1] &quot;The study will analyse the data using t-tests. The True Consensus level will be compared with False Consensus while the False Consensus will be compared with the No Consensus condition&quot;</code></pre>
 <pre class="r"><code>IlluCon_light_summary &lt;- IlluCon_light %&gt;%
   group_by(ExpCondition1, Rating_1)%&gt;%
-  summarise</code></pre>
+  summarise
+
+
+#t test comparisons for all the variables in the experimental conditions
+t.test(IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == &quot;TrueConsensus&quot;], IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == &quot;FalseConsensus&quot;])</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 ==  and IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 ==     &quot;TrueConsensus&quot;] and     &quot;FalseConsensus&quot;]
+## t = 0.81161, df = 13.922, p-value = 0.4307
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -17.88476  39.64234
+## sample estimates:
+## mean of x mean of y 
+##  63.33333  52.45455</code></pre>
+<pre class="r"><code>t.test(IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == &quot;FalseConsensus&quot;], IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == &quot;NoConsensus&quot;])</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 ==  and IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 ==     &quot;FalseConsensus&quot;] and     &quot;NoConsensus&quot;]
+## t = -0.7693, df = 21.861, p-value = 0.4499
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -29.03146  13.32517
+## sample estimates:
+## mean of x mean of y 
+##  52.45455  60.30769</code></pre>
+<pre class="r"><code>t.test(IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == &quot;TrueConsensus&quot;], IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 == &quot;NoConsensus&quot;])</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 ==  and IlluCon_light_summary$Rating_1[IlluCon_light_summary$ExpCondition1 ==     &quot;TrueConsensus&quot;] and     &quot;NoConsensus&quot;]
+## t = 0.22497, df = 14.319, p-value = 0.8252
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -25.75956  31.81084
+## sample estimates:
+## mean of x mean of y 
+##  63.33333  60.30769</code></pre>
 </div>
 </div>
 
