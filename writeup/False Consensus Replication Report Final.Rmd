@@ -92,7 +92,7 @@ Data preparation following the analysis plan.
 library(tidyverse)
 library(DT) 
 library(ggthemes) 
-library(wordbankr)
+#library(wordbankr)
 library(purrr)
 library(shiny)
 library(here)
@@ -113,25 +113,27 @@ IlluCon_light <- IlluCon_light %>%
   filter(Negative_1 == 4)
 
 
-IlluCon_light[is.na(IlluCon_light)] <- 0  #Change all NA to 0 so that numeric operations can be carried out on values
-
-
-which(!is.numeric(IlluCon_light))     #Change every other column entry to numeric values
-
-IlluCon_light$Positive_1 <- as.numeric(IlluCon_light$Positive_1)
-IlluCon_light$Positive_2 <- as.numeric(IlluCon_light$Positive_2)
-IlluCon_light$Positive_3 <- as.numeric(IlluCon_light$Positive_3)
-IlluCon_light$Positive_4 <- as.numeric(IlluCon_light$Positive_4)
-IlluCon_light$Negative_1 <- as.numeric(IlluCon_light$Negative_1)
-IlluCon_light$False_Consensus_1 <- as.numeric(IlluCon_light$False_Consensus_1)
-IlluCon_light$False_Consensus_2 <- as.numeric(IlluCon_light$False_Consensus_2)
-IlluCon_light$False_Consensus_3 <- as.numeric(IlluCon_light$False_Consensus_3)
-IlluCon_light$Rating_1 <- as.numeric(IlluCon_light$Rating_1)
-
-f <- sapply(IlluCon_light, is.numeric)
-
-which(f)
-IlluCon_light[, f]
+#IlluCon_light[is.na(IlluCon_light)] <- 0  #Change all NA to 0 so that numeric operations can be carried out on values
+#this line didn't work, but clear what's meant
+IlluCon_light <- IlluCon_light |> 
+#   mutate(across(everything(), ~ifelse(is.na(.x),0,.x) |> ))
+# 
+# which(!is.numeric(IlluCon_light))     #Change every other column entry to numeric values
+# 
+# IlluCon_light$Positive_1 <- as.numeric(IlluCon_light$Positive_1)
+# IlluCon_light$Positive_2 <- as.numeric(IlluCon_light$Positive_2)
+# IlluCon_light$Positive_3 <- as.numeric(IlluCon_light$Positive_3)
+# IlluCon_light$Positive_4 <- as.numeric(IlluCon_light$Positive_4)
+# IlluCon_light$Negative_1 <- as.numeric(IlluCon_light$Negative_1)
+# IlluCon_light$False_Consensus_1 <- as.numeric(IlluCon_light$False_Consensus_1)
+# IlluCon_light$False_Consensus_2 <- as.numeric(IlluCon_light$False_Consensus_2)
+# IlluCon_light$False_Consensus_3 <- as.numeric(IlluCon_light$False_Consensus_3)
+# IlluCon_light$Rating_1 <- as.numeric(IlluCon_light$Rating_1)
+# 
+# f <- sapply(IlluCon_light, is.numeric)
+# 
+# which(f)
+# IlluCon_light[, f]
 
 
 IlluCon_light <- IlluCon_light %>%       #Indicate the conditions in the experiment
@@ -146,6 +148,31 @@ IlluCon_light <- IlluCon_light %>%       #Indicate the conditions in the experim
 
 
 ### Confirmatory analysis
+
+```{r}
+# new code written by VB
+# original excludes upper and lower quintile by group 
+
+#145 datapoints in original
+# expect around 87 post exclusion
+
+quintiles <- IlluCon_light |> select(ExpCondition1, Rating_1)|> 
+  group_by(ExpCondition1) |> 
+  summarize(low=quantile(Rating_1,probs=c(.2)),
+            high=quantile(Rating_1, probs=c(.8)))
+
+filtered <- IlluCon_light |>select(ExpCondition1, Rating_1)|> 
+  left_join(quintiles) |> 
+  filter(Rating_1>=low) |> 
+  filter(Rating_1<= high)
+  # it's unclear if we should include or exclude the equals ones!!
+
+no_v_false <- filtered |> filter(ExpCondition1 %in% c("NoConsensus","FalseConsensus"))
+
+t.test(Rating_1 ~ ExpCondition1, data=no_v_false)
+
+no_v_false |> group_by(ExpCondition1) |>  summarize(m=mean(Rating_1), se=sd(Rating_1)/sqrt(n()))
+```
 
 The analyses as specified in the analysis plan.  
 ```{r echo=TRUE}
